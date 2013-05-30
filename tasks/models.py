@@ -37,6 +37,8 @@ class Task(models.Model):
     taskapproved = models.BooleanField(default=False)
     taskcompleted = models.BooleanField(default=False)
     taskstatus = models.IntegerField()
+    #We need to change the taskstatus variable to
+    #taskstatus = models.CharField ( max_length=1, choices=TASK_STATUSES )
 
     #Task Nesting
     parenttask = models.ForeignKey('self', null=True, blank=True, default=None, related_name='parent_task')

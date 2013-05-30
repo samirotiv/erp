@@ -14,10 +14,18 @@ TASK_STATUSES = (
         )
 
 class Task(models.Model):
+    
+    #Central task information
     taskcreator = models.ForeignKey(ERPUser)
     datecreated = models.DateField('Date Created')
     deadline = models.DateField ('Deadline')
-    descr = models.CharField (max_length=40)
+    
+    #Description of the task
+    subject = models.CharField (max_length=100)
+    #The following thing should be the model's full-fledged description.
+    #As of now, I'm making it a text field, but I think we should
+    #put in formatting capability?
+    description = models.TextField ( null = True, blank = True )
     
     #Group of users doing the task.
     taskforce = models.ManyToManyField (ERPUser, related_name='taskforce')

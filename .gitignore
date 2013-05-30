@@ -1,3 +1,7 @@
 *.pyc
 *~
 settings.py
+
+.DS_Store
+
+*.pyc

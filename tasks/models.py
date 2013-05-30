@@ -31,10 +31,12 @@ class Task(models.Model):
     description = models.TextField ( null = True, blank = True )
     
     #Group of users doing the task.
-    taskforce = models.ManyToManyField (ERPUser, related_name='user_tasks_set')
+    taskforce = models.ManyToManyField (ERPUser, related_name='task_set')
+    
+    #Yes, the related-names above and below are the default values. I've left them in for easy modification.
     
     #Classify tasks by subdepartments to facilitate easy querying.
-    targetsubdepts = models.ManyToManyField (Subdept, related_name='subdept_tasks_set')
+    targetsubdepts = models.ManyToManyField (Subdept, related_name='task_set')
     
     #Taking care of cross-departmental tasks.
     origindept = models.ForeignKey(Dept, related_name='created_tasks_set')

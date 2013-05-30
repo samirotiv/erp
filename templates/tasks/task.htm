@@ -1,0 +1,12 @@
+
+
+<h1>Register:</h1>
+
+
+<form action="" method="post">
+{% csrf_token %}
+{% if form.errors %}<p>Error in form</p>{% endif %}
+<table>
+{{ form.as_table }}</table>
+<p><input type="submit" alt="Add Task" /></p>
+</form>

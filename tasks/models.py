@@ -20,6 +20,7 @@ class Task(models.Model):
  #   datecreated = models.DateField('Date Created') I don't know what passing a string to the DateField means.
  #I'm commenting out for now. Datecreated should just be a date field with auto_now_add on.
     datecreated = models.DateField ( auto_now_add = True )
+    datelastmodified = models.DateField ( auto_now = True ) #auto_now will give us the last modified date.
     deadline = models.DateField ('Deadline')
     
     #Description of the task

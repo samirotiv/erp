@@ -1,8 +1,3 @@
-
 *.pyc
-
-*.pyc
-
-*.pyc
-
-*.pyc
+*~
+settings.py

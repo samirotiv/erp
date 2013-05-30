@@ -16,7 +16,7 @@ TASK_STATUSES = (
 class Task(models.Model):
     
     #Central task information
-    taskcreator = models.ForeignKey(ERPUser)
+    taskcreator = models.ForeignKey(ERPUser, related_name='created_task_set')
     datecreated = models.DateField ('Date Created', auto_now_add = True )
     datelastmodified = models.DateField ('Date Last Modified',  auto_now = True ) #auto_now will give us the last modified date.
     deadline = models.DateField ('Deadline')

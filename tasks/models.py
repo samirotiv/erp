@@ -17,7 +17,9 @@ class Task(models.Model):
     
     #Central task information
     taskcreator = models.ForeignKey(ERPUser)
-    datecreated = models.DateField('Date Created')
+ #   datecreated = models.DateField('Date Created') I don't know what passing a string to the DateField means.
+ #I'm commenting out for now. Datecreated should just be a date field with auto_now_add on.
+    datecreated = models.DateField ( auto_now_add = True )
     deadline = models.DateField ('Deadline')
     
     #Description of the task

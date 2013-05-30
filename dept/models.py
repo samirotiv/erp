@@ -6,7 +6,14 @@ from django.db import models
 #Department Model
 class Dept(models.Model):
     name = models.CharField(max_length=30)
+    
+    def __unicode__(self):
+	return self.name	
+	
 
 class Subdept(models.Model):
     name = models.CharField(max_length=30)
     dept = models.ForeignKey(Dept)
+
+    def __unicode__(self):
+	return self.name

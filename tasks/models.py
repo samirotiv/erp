@@ -37,7 +37,7 @@ class Task(models.Model):
     #Taking care of cross-departmental tasks.
     origindept = models.ForeignKey(Dept, related_name='created_tasks_set')
     targetdept = models.ForeignKey(Dept, related_name='todo_tasks_set')
-    isxdepartmental = models.BooleanField(default=False)
+    isxdepartmental = models.BooleanField(default=False, blank=True)
     
     #This is the task status variable.
     #One question is what it defaults to. This depends on isxdepartmental.
@@ -47,9 +47,9 @@ class Task(models.Model):
 
     #Task Nesting
     parenttask = models.ForeignKey('self', null=True, blank=True, default=None, related_name='child_tasks_set')
-    depthlevel = models.IntegerField(default=0)
+    depthlevel = models.IntegerField(default=0, blank=True)
 
-    def __unicode__():
+    def __unicode__(self):
         return self.description
 
     def isPastDeadline():

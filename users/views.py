@@ -4,6 +4,7 @@ from users.forms import LoginForm
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout, REDIRECT_FIELD_NAME
 from django.template.context import Context, RequestContext
 from django.shortcuts import render_to_response
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 
 def login(request):
 

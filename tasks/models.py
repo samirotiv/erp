@@ -8,8 +8,9 @@ from datetime import date
 TASK_STATUSES = ( 
         ( 'U' , 'UNAPPROVED' ) ,
         ( 'O' , 'APPROVED AND ONGOING' ) ,
-        ( 'A' , 'APPROVED, ALMOST DONE' ) '
-        ( 'C' , 'COMPLETED' )
+        ( 'A' , 'APPROVED, ALMOST DONE' ) ,
+        ( 'R' , 'REPORTED COMPLETED' ) ,
+        ( 'C' , 'COMPLETED' ) ,
         )
 
 class Task(models.Model):

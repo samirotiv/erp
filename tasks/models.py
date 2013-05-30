@@ -5,6 +5,12 @@ from users.models import ERPUser
 from dept.models import Subdept, Dept
 from datetime import date
 
+TASK_STATUSES = ( 
+        ( 'U' , 'UNAPPROVED' ) ,
+        ( 'O' , 'APPROVED AND ONGOING' ) ,
+        ( 'A' , 'APPROVED, ALMOST DONE' ) '
+        ( 'C' , 'COMPLETED' )
+        )
 
 class Task(models.Model):
     taskcreator = models.ForeignKey(ERPUser)

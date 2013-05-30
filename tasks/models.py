@@ -30,14 +30,14 @@ class Task(models.Model):
     description = models.TextField ( null = True, blank = True )
     
     #Group of users doing the task.
-    taskforce = models.ManyToManyField (ERPUser, related_name='taskforce')
+    taskforce = models.ManyToManyField (ERPUser, related_name='user_tasks_set')
     
     #Classify tasks by subdepartments to facilitate easy querying.
-    targetsubdepts = models.ManyToManyField (Subdept, related_name='targetsubdepts')
+    targetsubdepts = models.ManyToManyField (Subdept, related_name='subdept_tasks_set')
     
     #Taking care of cross-departmental tasks.
-    origindept = models.ForeignKey(Dept, related_name='origindept')
-    targetdept = models.ForeignKey(Dept, related_name='targetdept')
+    origindept = models.ForeignKey(Dept, related_name='created_tasks_set')
+    targetdept = models.ForeignKey(Dept, related_name='todo_tasks_set')
     isxdepartmental = models.BooleanField(default=False)
     
     #This is the task status variable.
@@ -46,7 +46,7 @@ class Task(models.Model):
     taskstatus = models.CharField ( max_length=1, choices=TASK_STATUSES )
 
     #Task Nesting
-    parenttask = models.ForeignKey('self', null=True, blank=True, default=None, related_name='parent_task')
+    parenttask = models.ForeignKey('self', null=True, blank=True, default=None, related_name='child_tasks_set')
     depthlevel = models.IntegerField(default=0)
 
     def __unicode__():

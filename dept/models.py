@@ -1,12 +1,12 @@
-# ERP - DEPTARMENTS APP - MODELS
+# ************ ERP - DEPTARMENTS APP - MODELS *****************
 from django.db import models
 
 # Create your models here.
 
 #Department Model
-class dept(models.Model):
+class Dept(models.Model):
     name = models.CharField(max_length=30)
 
-class subdept(models.Model):
+class Subdept(models.Model):
     name = models.CharField(max_length=30)
-    dept = models.ForeignKey(dept)
+    dept = models.ForeignKey(Dept)

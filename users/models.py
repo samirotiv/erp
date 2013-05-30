@@ -1,20 +1,43 @@
- # ERP - USERS APP - MODELS
+ # ************* ERP - USERS APP - MODELS *************
 from django.db import models
 from django.contrib.auth.models import User
-from erp.dept.models import dept, subdept
+from dept.models import Dept, Subdept
 
 # Create your models here.
+
+
+#Annoying little details
+HOSTEL_CHOICES  =(
+                  ("Ganga", "Ganga"),
+                  ("Mandak", "Mandak"),
+                  ("Jamuna", "Jamuna"),
+                  ("Alak", "Alak"),
+                  ("Saraswathi", "Saraswathi"),
+                  ("Narmada", "Narmada"),
+                  ("Godav", "Godav"),
+                  ("Pampa", "Pampa"),
+                  ("Tambi", "Tambi"),
+                  ("Sindhu", "Sindhu"),
+                  ("Mahanadi", "Mahanadi"),
+                  ("Sharavati", "Sharavati"),
+                  ("Krishna", "Krishna"),
+                  ("Cauvery", "Cauvery"),
+                  ("Tapti", "Tapti"),
+                  ("Brahmaputra", "Brahmaputra"),
+                  ("Sarayu", "Sarayu"),
+                  )
+
 
 #User Profile Model
 class ERPUser(models.Model):
     user = models.OneToOneField(User)
-    dept = models.ForeignKey(dept)
-    subdept = models.ForeignKey(subdept, blank=True, null=True, default=None)
+    dept = models.ForeignKey(Dept, related_name='dept')
+    subdept = models.ForeignKey(Subdept, blank=True, null=True, default=None, related_name='subdept')
 
     #Handling the Multiple Identity Problem
     multiple_ids = models.BooleanField(default=False)
-    coord_relations = models.ManyToManyField(subdept)
-    supercoord_relations = models.ManyToManyField(dept)
+    coord_relations = models.ManyToManyField(Subdept, related_name='coord_relations')
+    supercoord_relations = models.ManyToManyField(Dept, related_name='supercoord_relations')
 
     #Other information
     nickname = models.CharField(max_length=30, blank=True)
@@ -24,3 +47,5 @@ class ERPUser(models.Model):
     hostel = models.CharField(max_length=15, choices = HOSTEL_CHOICES, blank=True)
 #PLEASE PASTE THE HOSTEL_CHOICES LIST
     room_no = models.IntegerField(default=0, blank=True)
+
+

@@ -17,17 +17,13 @@ class Task(models.Model):
     
     #Central task information
     taskcreator = models.ForeignKey(ERPUser)
- #   datecreated = models.DateField('Date Created') I don't know what passing a string to the DateField means.
- #I'm commenting out for now. Datecreated should just be a date field with auto_now_add on.
-    datecreated = models.DateField ( auto_now_add = True )
-    datelastmodified = models.DateField ( auto_now = True ) #auto_now will give us the last modified date.
+    datecreated = models.DateField ('Date Created', auto_now_add = True )
+    datelastmodified = models.DateField ('Date Last Modified',  auto_now = True ) #auto_now will give us the last modified date.
     deadline = models.DateField ('Deadline')
     
     #Description of the task
     subject = models.CharField (max_length=100)
-    #The following thing should be the model's full-fledged description.
-    #As of now, I'm making it a text field, but I think we should
-    #put in formatting capability?
+    #TODO : FORMATTING CAPABLITY?
     description = models.TextField ( null = True, blank = True )
     
     #Group of users doing the task.
@@ -46,6 +42,7 @@ class Task(models.Model):
     #This is the task status variable.
     #One question is what it defaults to. This depends on isxdepartmental.
     #TODO: Write a method that handles this.
+#SAMIR: The default could be unapproved. In case of a intradepartmental task created by a core, the view will take care of automatically approving it.
     taskstatus = models.CharField ( max_length=1, choices=TASK_STATUSES )
 
     #Task Nesting

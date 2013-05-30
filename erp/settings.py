@@ -1,3 +1,4 @@
+# **************** ERP - SETTINGS.PY - COMMENTING DONE TO KEEP TRACK OF MODIFICATIONS
 # Django settings for erp project.
 
 DEBUG = True
@@ -9,6 +10,9 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+
+
+# *********************** DATABASE DETAILS ADDED ***************
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -19,6 +23,10 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
+# **************************************************************
+
+
+
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.4/ref/settings/#allowed-hosts
@@ -112,6 +120,10 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+
+
+
+## ****************** ADDED THE 3 APPS & AUTH DETAILS *****************************
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -127,6 +139,14 @@ INSTALLED_APPS = (
     'users',
     'dept',
 )
+
+AUTH_PROFILE_MODULE = 'users.ERPUser'
+
+##*********************************************************************************
+
+
+
+
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

@@ -48,7 +48,7 @@ class Task(models.Model):
     depthlevel = models.IntegerField(default=0)
 
     def __unicode__():
-        return self.Descr
+        return self.description
 
     def isPastDeadline():
         return date.today() > self.Deadline

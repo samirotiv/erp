@@ -4,6 +4,7 @@
     </head>
     <body>
 	<form action = "" method="POST">
+	    {% csrf_token %}
 	    <table>
 		{{ identity_form.as_table }} 
 	    </table>

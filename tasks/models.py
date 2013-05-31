@@ -29,7 +29,7 @@ class Task(models.Model):
     #Group of users doing the task.
     taskforce = models.ManyToManyField (ERPUser, related_name='task_set')
     
-    #Yes, the related-names above and below are the default values. I've left them in for easy modification.
+    #The related-names above and below are the default values. I've left them in for easy modification.
     
     #Classify tasks by subdepartments to facilitate easy querying.
     targetsubdepts = models.ManyToManyField (Subdept, related_name='task_set')
@@ -54,6 +54,20 @@ class Task(models.Model):
 
     def isPastDeadline():
         return date.today() > self.Deadline
+        
+    #Overriding the default save function
+    def save(self, *args, **kwargs):
+
+        
+        # Set the depth level of the task
+        if self.parenttask == None:
+            self.depthlevel = 0
+        else:
+            self.depthlevel = self.parenttask.depthlevel + 1
+        
+        # Call the "real" save() method.
+        super(Task, self).save(*args, **kwargs) 
+        #do_something_else()
 
     
     

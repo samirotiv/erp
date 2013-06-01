@@ -1,4 +1,4 @@
-# ************** ERP - TASKS APP - VIEWS *********************
+# ************** ERP - TASKS APP - VIEWS ********************* #
 from tasks.models import Task
 from tasks.forms import IntraTaskForm, CrossTaskForm
 
@@ -53,11 +53,7 @@ def add_intra_task(request):
         
 #TODO: UNCOMMENT COMMENTS WHEN THE LOGIN SYSTEM IS READY 
             #newTask.taskcreator = userprofile
-        
-            #Set these variables - Approved & Ongoing Intra-departmental task.
-            newTask.isxdepartmental = False
-            newTask.taskstatus = 'O'
-            
+                    
             #Get the TaskForce from the form
             cores = form.cleaned_data['cores']
             coords = form.cleaned_data['coords']
@@ -77,13 +73,13 @@ def add_intra_task(request):
             #newTask.targetdept = userprofile.dept
             
             # Add the concerned subdepartments to the "targetsubdepts" field.
-            for user in coords:
-                for usersubdept in user.coord_relations.all():
-                    if usersubdept.dept == newTask.origindept:
-                        newTask.targetsubdepts.add(usersubdept)
+            newTask.populateTargetSubdepts()
+
+            #Set these variables - Approved & Ongoing Intra-departmental task.
+            newTask.isxdepartmental = False
+            newTask.taskstatus = 'O'
         
-            newTask.save()
-        
+            newTask.save()        
             return HttpResponse ("Task Saved")
         else:
             return render_to_response ('tasks/task.html', {'form': form }, context_instance=RequestContext(request))
@@ -112,39 +108,11 @@ FIELDS THAT ARE GOING TO BE HAVE TO WIPED OUT AND RECREATED:
 #@login_required
 #@user_passes_test (core_check)
 def edit_intra_task(request, primkey):
-    if request.method == 'POST':
-        form = IntraTaskForm(request.POST)
-        if form.is_valid():
-            newTask = form.save()
+    task = Task.objects.get(pk=primkey)
+    if task.isxdepartmental = False:
+        if request.
         
-#TODO: REMOVE THE COMMENTS WHEN THE LOGIN SYSTEM IS READY 
-            #userprofile = request.user.get_profile()
-            #newTask.taskcreator = userprofile
-        
-            #Set these variables - Approved & Ongoing Intra-departmental task.
-            newTask.isxdepartmental = False
-            newTask.taskstatus = 'O'
-        
-#TODO: REMOVE THE COMMENTS WHEN THE LOGIN SYSTEM IS READY        
-            #Set the origin & target departments.        
-            #newTask.origindept = userprofile.dept
-            #newTask.targetdept = userprofile.dept
-            
-            # Add the concerned subdepartments to the "targetsubdepts" field.
-            newTask.populateTargetSubdepts()
-        
-            newTask.save()
-        
-            return HttpResponse ("Task Saved")
-        else:
-            return render_to_response ('tasks/task.html', {'form': form }, context_instance=RequestContext(request))
-    
-    else:
-        form = IntraTaskForm()
-        context = {'form': form}
-        return render_to_response('tasks/task.html', context, context_instance=RequestContext(request))        
-        
-        
+ 
         
 
 

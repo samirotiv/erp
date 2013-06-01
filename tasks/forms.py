@@ -8,9 +8,9 @@ from dept.models import Subdept
 # _____________--- INTRADEPARTMENTAL TASK FORM ---______________#
 class IntraTaskForm(ModelForm):
     #Temporary solution to provide options for selecting a taskforce.
-    coords = forms.ModelMultipleChoiceField(queryset = ERPUser.objects.none())
-    supercoords = forms.ModelMultipleChoiceField(queryset = ERPUser.objects.none())
-    cores = forms.ModelMultipleChoiceField(queryset = ERPUser.objects.none())
+    coords = forms.ModelMultipleChoiceField(queryset = ERPUser.objects.none(), required=False)
+    supercoords = forms.ModelMultipleChoiceField(queryset = ERPUser.objects.none(), required=False )
+    cores = forms.ModelMultipleChoiceField(queryset = ERPUser.objects.none(), required=False)
 
     class Meta:
         model = Task

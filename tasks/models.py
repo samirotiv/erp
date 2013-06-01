@@ -75,7 +75,8 @@ class Task(models.Model):
         self.targetsubdepts.clear()
 
         #Fill targetsubdepts with concerned subdepartments of the TaskForce
-        for user in self.taskforce.all():
-            for usersubdept in user.coord_relations.all():
-                if usersubdept.dept == newTask.origindept:
-                    self.targetsubdepts.add(usersubdept)
+        if self.targetdept:
+            for user in self.taskforce.all():
+                for usersubdept in user.coord_relations.all():
+                    if usersubdept.dept == self.targetdept:
+                        self.targetsubdepts.add(usersubdept)

@@ -7,11 +7,21 @@ from django.shortcuts import render_to_response, render, get_object_or_404
 
 from django.template import RequestContext
 
+#UNNECESSARY: ONLY FOR TESTING.
+from dept.models import Dept 
+
 
 # _____________--- CORE CHECK FUNCTION ---______________#
 def core_check (user):
     loginuser = user.get_profile()
     return loginuser.status == 2
+
+
+"""
+PROPOSED/TODO:
+TO ALSO AUTOMATE THE SETTING OF CHILD TASK.
+"""
+
 
 
 # _____________--- INTRADEPARTMENTAL TASK ADD VIEW ---______________#
@@ -29,26 +39,45 @@ Fields taken care of by the view:
 #@login_required
 #@user_passes_test (core_check)
 def add_intra_task(request):
+
+#TODO: UNCOMMENT WHEN THE LOGIN SYSTEM IS READY 
+    #userprofile = request.user.get_profile()
+    #department = userprofile.dept
+#TESTING LINE: REMOVE WHEN LOGIN SYSTEM IS READY
+    department = Dept.objects.get(pk='1')
+    
     if request.method == 'POST':
-        form = IntraTaskForm(request.POST)
+        form = IntraTaskForm(department, request.POST)
         if form.is_valid():
             newTask = form.save()
         
-#TODO: REMOVE THE COMMENTS WHEN THE LOGIN SYSTEM IS READY 
-            #userprofile = request.user.get_profile()
+#TODO: UNCOMMENT COMMENTS WHEN THE LOGIN SYSTEM IS READY 
             #newTask.taskcreator = userprofile
         
             #Set these variables - Approved & Ongoing Intra-departmental task.
             newTask.isxdepartmental = False
             newTask.taskstatus = 'O'
+            
+            #Get the TaskForce from the form
+            cores = form.cleaned_data['cores']
+            coords = form.cleaned_data['coords']
+            supercoords = form.cleaned_data['supercoords']
+            
+            #Set the TaskForce for the Task
+            for user in coords: 
+                newTask.taskforce.add(user)
+            for user in supercoords: 
+                newTask.taskforce.add(user)
+            for user in cores: 
+                newTask.taskforce.add(user)
         
-#TODO: REMOVE THE COMMENTS WHEN THE LOGIN SYSTEM IS READY        
+#TODO: UNCOMMENT WHEN THE LOGIN SYSTEM IS READY        
             #Set the origin & target departments.        
             #newTask.origindept = userprofile.dept
             #newTask.targetdept = userprofile.dept
             
             # Add the concerned subdepartments to the "targetsubdepts" field.
-            for user in newTask.taskforce.all():
+            for user in coords:
                 for usersubdept in user.coord_relations.all():
                     if usersubdept.dept == newTask.origindept:
                         newTask.targetsubdepts.add(usersubdept)
@@ -60,7 +89,7 @@ def add_intra_task(request):
             return render_to_response ('tasks/task.html', {'form': form }, context_instance=RequestContext(request))
     
     else:
-        form = IntraTaskForm()
+        form = IntraTaskForm(department)
         context = {'form': form}
         return render_to_response('tasks/task.html', context, context_instance=RequestContext(request))
 
@@ -115,6 +144,8 @@ def edit_intra_task(request, primkey):
         context = {'form': form}
         return render_to_response('tasks/task.html', context, context_instance=RequestContext(request))        
         
+        
+        
 
 
 # _____________--- CROSS DEPARTMENTAL TASK ADD VIEW ---______________#
@@ -124,20 +155,30 @@ Fields entered by user:
     'deadline', 'subject', 'description', 'parenttask', 'targetsubdepts'
 
 Fields automatically taken care of by model/model save function override:
-    'taskcreator', 'datecreated', 'datelastmodified', 'depthlevel', 'taskforce'
+    'taskcreator', 'datecreated', 'datelastmodified', 'depthlevel'
 
 Fields taken care of by the view:
     'origindept', 'targetdept', 'isxdepartmental', 'taskstatus' 
+    
+Fields that are unset:
+     'taskforce'
 """ 
 #@login_required
 #@user_passes_test (core_check)
 def add_cross_task(request):
+
+#TODO: UNCOMMENT WHEN THE LOGIN SYSTEM IS READY 
+    #userprofile = request.user.get_profile()
+    #department = userprofile.dept
+#TESTING LINE: REMOVE WHEN LOGIN SYSTEM IS READY
+    department = Dept.objects.get(pk='1')
+    
     if request.method == 'POST':
-        form = CrossTaskForm(request.POST)
+        form = CrossTaskForm(department, request.POST)
         if form.is_valid():
             newTask = form.save()
         
-#TODO: REMOVE THE COMMENTS WHEN THE LOGIN SYSTEM IS READY 
+#TODO: UNCOMMENT WHEN THE LOGIN SYSTEM IS READY 
             #userprofile = request.user.get_profile()
             #newTask.taskcreator = userprofile
         
@@ -145,7 +186,7 @@ def add_cross_task(request):
             newTask.isxdepartmental = True
             newTask.taskstatus = 'U'
         
-#TODO: REMOVE THE COMMENTS WHEN THE LOGIN SYSTEM IS READY        
+#TODO: UNCOMMENT WHEN THE LOGIN SYSTEM IS READY        
             #Set the origin & target departments.        
             #newTask.origindept = userprofile.dept
             #newTask.targetdept = userprofile.dept
@@ -156,6 +197,6 @@ def add_cross_task(request):
         else:
             return render_to_response ('tasks/task.html', {'form': form }, context_instance=RequestContext(request))
     else:
-        form = CrossTaskForm()
+        form = CrossTaskForm (department)
         context = {'form': form}
         return render_to_response('tasks/task.html', context, context_instance=RequestContext(request))

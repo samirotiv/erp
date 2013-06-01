@@ -63,7 +63,57 @@ def add_intra_task(request):
         form = IntraTaskForm()
         context = {'form': form}
         return render_to_response('tasks/task.html', context, context_instance=RequestContext(request))
+
+
+# _____________--- INTRADEPARTMENTAL TASK EDIT VIEW ---______________#
+"""
+MORE INFO:
+Fields edited by user:
+    'deadline', 'subject', 'description', 'taskforce', 'parenttask', 
+
+Fields automatically taken care of by model/model save function override:
+    'datelastmodified', 'depthlevel'
+
+FIELDS THAT WON'T CHANGE:
+    'origindept', 'targetdept', 'isxdepartmental', 'taskstatus', 'taskcreator', 'datecreated'
+
+FIELDS THAT ARE GOING TO BE HAVE TO WIPED OUT AND RECREATED:
+    'targetsubdepts'
+"""
+#@login_required
+#@user_passes_test (core_check)
+def edit_intra_task(request, primkey):
+    if request.method == 'POST':
+        form = IntraTaskForm(request.POST)
+        if form.is_valid():
+            newTask = form.save()
         
+#TODO: REMOVE THE COMMENTS WHEN THE LOGIN SYSTEM IS READY 
+            #userprofile = request.user.get_profile()
+            #newTask.taskcreator = userprofile
+        
+            #Set these variables - Approved & Ongoing Intra-departmental task.
+            newTask.isxdepartmental = False
+            newTask.taskstatus = 'O'
+        
+#TODO: REMOVE THE COMMENTS WHEN THE LOGIN SYSTEM IS READY        
+            #Set the origin & target departments.        
+            #newTask.origindept = userprofile.dept
+            #newTask.targetdept = userprofile.dept
+            
+            # Add the concerned subdepartments to the "targetsubdepts" field.
+            newTask.populateTargetSubdepts()
+        
+            newTask.save()
+        
+            return HttpResponse ("Task Saved")
+        else:
+            return render_to_response ('tasks/task.html', {'form': form }, context_instance=RequestContext(request))
+    
+    else:
+        form = IntraTaskForm()
+        context = {'form': form}
+        return render_to_response('tasks/task.html', context, context_instance=RequestContext(request))        
         
 
 

@@ -68,6 +68,14 @@ class Task(models.Model):
         # Call the "real" save() method.
         super(Task, self).save(*args, **kwargs) 
         #do_something_else()
+    
+    #Function to populate the TargetSubDepts field
+    def populateTargetSubdepts(self):
+        #Empty targetsubdepts
+        self.targetsubdepts.clear()
 
-    
-    
+        #Fill targetsubdepts with concerned subdepartments of the TaskForce
+        for user in self.taskforce.all():
+            for usersubdept in user.coord_relations.all():
+                if usersubdept.dept == newTask.origindept:
+                    self.targetsubdepts.add(usersubdept)

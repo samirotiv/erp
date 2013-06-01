@@ -3,6 +3,14 @@
 	<title> Choose Identity Form! </title>
     </head>
     <body>
+	<H1>
+	{% if noerror %}
+	Please choose which of your coordships/supercoordships you want to visit!
+	{% else %}
+	Please choose exactly one!
+	{% endif %}
+        </H1>
+	    
 	<form action = "" method="POST">
 	    {% csrf_token %}
 	    <table>

@@ -8,20 +8,35 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 
 def login(request):
 
+    #Redirect logged in users
     if request.user.is_authenticated():
-	return HttpResponseRedirect('/home/') #Redirect if logged in.
+	return HttpResponseRedirect('/home/')
+
     if request.method == 'POST':
+
+	#Authenticate the user
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
         user = authenticate(username=username, password=password)
+
+        #if everything is in order
         if user is not None and user.is_active and not user.is_superuser:
-            auth_login(request, user)#if login forms is valid
-	    if user.erpuser.multiple_ids == True:   #check multiple identities
+            auth_login(request, user)
+
+	    #Set things about the user. I am assuming that status, subdept etc are set a priori for users without multiple identities.
+	    
+	    #check for multiple identities
+	    if user.erpuser.multiple_ids == True:  
 		return HttpResponseRedirect('/home/choose_identity/')
+	    
 	    return HttpResponseRedirect('/home/')
+
+	#If the username and password aren't in order
         invalid_login = True
         login_form = LoginForm()
         return render_to_response('users/login.html', locals(), context_instance=RequestContext(request))
+    
+    #rendering for the initial GET request
     else:
 	login_form = LoginForm()
         return render_to_response('users/login.html', locals(), context_instance=RequestContext(request))

@@ -93,7 +93,7 @@ def add_intra_task(request):
 COMMENTED OUT FOR VISWA'S SANITY
 
 # _____________--- INTRADEPARTMENTAL TASK EDIT VIEW ---______________#
-"""
+
 MORE INFO:
 Fields edited by user:
     'deadline', 'subject', 'description', 'taskforce', 'parenttask', 
@@ -106,7 +106,7 @@ FIELDS THAT WON'T CHANGE:
 
 FIELDS THAT ARE GOING TO BE HAVE TO WIPED OUT AND RECREATED:
     'targetsubdepts'
-"""
+
 #@login_required
 #@user_passes_test (core_check)
 def edit_intra_task(request, primkey):

@@ -14,8 +14,7 @@ class IntraTaskForm(ModelForm):
 
     class Meta:
         model = Task
-# TODO: Remove 'taskcreator', 'origindept', 'targetdept' fields. Put there only for testing until login system gets ready.
-        fields = ['taskcreator', 'origindept', 'targetdept', 'deadline', 'subject', 'description',  'parenttask']
+        fields = ['deadline', 'subject', 'description',  'parenttask']
         
     #Framework for getting a QuerySet of Coords, Supercoords, and Cores.
     def __init__(self, department, *args, **kwargs):
@@ -24,14 +23,16 @@ class IntraTaskForm(ModelForm):
         self.fields['supercoords'].queryset = department.supercoord_set.all()
         self.fields['cores'].queryset = department.core_set.all()
         
+        
+        
+        
 
 
 # _____________--- CROSSDEPARTMENTAL TASK FORM ---______________#
 class CrossTaskForm(ModelForm):
     class Meta:
         model = Task
-# TODO: Remove 'taskcreator', 'origindept', 'targetdept' fields. Put there only for testing until login system gets ready.
-        fields = ['taskcreator', 'origindept', 'targetdept', 'deadline', 'subject', 'description', 'parenttask', 'targetsubdepts']
+        fields = ['deadline', 'subject', 'description', 'parenttask', 'targetsubdepts']
         
         
     def clean_targetsubdepts(self):

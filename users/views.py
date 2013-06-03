@@ -11,7 +11,7 @@ def login(request):
 
     #Redirect logged in users
     if request.user.is_authenticated():
-	return HttpResponseRedirect('/home/')
+	return HttpResponseRedirect('/dash/')
 
     if request.method == 'POST':
 
@@ -30,7 +30,7 @@ def login(request):
 	    if user.erpuser.multiple_ids == True:  
 		return HttpResponseRedirect('/choose_identity/')
 	    
-	    return HttpResponseRedirect('/home/')
+	    return HttpResponseRedirect('/dash/')
 
 	#If the username and password aren't in order
         invalid_login = True
@@ -48,9 +48,7 @@ def logout(request):
     """
     if request.user.is_authenticated():
         auth_logout(request)
-        return HttpResponseRedirect('/login/')
-    else:
-        return HttpResponseRedirect('/login/')
+    return HttpResponseRedirect('/login/')
 
 
 @login_required
@@ -87,7 +85,7 @@ def choose_identity ( request ):
 	    else:
 		userprofile.status = 1 #supercoord
 	    userprofile.save()
-	    return HttpResponseRedirect ('/home/')
+	    return HttpResponseRedirect ('/dash/')
     identity_form = ChooseIdentityForm ( curruser = request.user.erpuser )
     return render_to_response ( 'dash/choose_identity.html', locals(), context_instance = RequestContext(request) )
  

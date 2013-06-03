@@ -18,5 +18,5 @@ urlpatterns = patterns('',
     url(r'^login/$', 'users.views.login'),
     url ( r'^choose_identity/$', 'users.views.choose_identity'),
     url(r'^logout/$', 'users.views.logout'),
-#    url(r'^dash/(?P<section>\w+)$', 'dash.dash_view'),
+#    url(r'^dash/$', 'dash.dash_view'),
 )

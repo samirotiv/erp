@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+</head>
+<body>
+    <H1> Task </H1>
+    
+<table>
+  <tr>
+    <th>Subject</th>
+    <td> {{ task.subject }}</td>
+  </tr>
+  <tr>
+    <th>Description</th>
+    <td> {{ task.description }} </td>
+  </tr>
+  <tr>
+    <th>Proposer</th>
+    <td>
+	{{ task.taskcreator }} 
+    </td>
+  </tr>
+  <tr>
+    <th>Creation Date</th>
+    <td> {{ task.datecreated|date:"F j, Y" }} </td>
+  </tr>
+  <tr>
+    <th>Deadline</th>
+     <td> {{ task.deadline|date:"F j, Y" }} </td>
+  </tr>
+  <tr>
+    <th>Status</th>
+    <td> {{task.taskstatus }} </td>
+  </tr>
+</table>
+</body>
+</html>

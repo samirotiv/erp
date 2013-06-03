@@ -1,0 +1,16 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+    <title>{% block title %}ERP{% endblock %}</title>
+</head>
+<body>
+    <a href = '/logout/'> Logout </a>
+    </br>
+    <h1>{%block welcome %} Welcome {% endblock %}</h1>
+    <hr>
+    {% block content %}{% endblock %}
+    {% block footer %}
+    <hr>
+    {% endblock %}
+</body>
+</html>

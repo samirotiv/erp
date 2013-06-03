@@ -4,8 +4,31 @@ from home.forms import ChooseIdentityForm
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 
+"""
+@login_required
+@user_passes_test ( core_check )
+def homepage_core (request):
+"""
+
+@login_required
 def homepage ( request ):
-    return render_to_response ( 'home/temp.html', locals(), context_instance = RequestContext(request) )
+
+    return render_to_response ( 'home/dashboard.html', locals() )
+    
+#TODO: Get this done.
+
+    if request.user.erpuser.status == 2:
+	return homepage_core (request)
+    
+    if request.user.erpuser.status == 1:
+	return homepage_supercoord (request)
+    
+    if request.user.erpuser.status == 0:
+	return homepage_coord (request)
+
+#Asserting false because the following must never happen.
+    print 'USER IS SOME WEIRD FUCK'
+    assert False
 
 @login_required
 def choose_identity ( request ):

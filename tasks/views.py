@@ -310,3 +310,16 @@ def edit_cross_task(request, primkey):
                 return HttpResponse ("Pack.")
     else:
         return HttpResponse ("Cross departmental tasks only.")
+
+
+def display_task(request,primkey):
+
+#TODO: Redirect people who aren't allowd to view this task. Add edit and delete buttons for cores and supercoords
+
+    try:
+	task = Task.objects.get(pk = primkey)
+    except:
+	return HttpResponse ("That task does not exist.")
+    return render_to_response('tasks/display.html', locals() )
+
+

@@ -40,6 +40,9 @@ def dash_view(request):
     query_dictionary["approval_pending_tasks"] = userprofile.dept.created_task_set.filter(taskstatus='U')
     query_dictionary["dept_tasks"] = userprofile.dept.todo_task_set.filter(isxdepartmental=True) #Remove if necessary.
     
+    #passing the userprofile
+    query_dictionary["userprofile"] = userprofile
+    
     
     #RENDERING THE TEMPLATE
     # For a Coordinator

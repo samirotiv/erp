@@ -1,7 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="en">
 <head>
-    <script scr="sorttable.js"></script>
     <title>{% block title %}ERP{% endblock %}</title>
 </head>
 <body>
@@ -9,13 +8,12 @@
     </br>
     <h1>{%block welcome %} Welcome {% endblock %}</h1>
     <hr>
-    {%block owntasks %} 
+    {% block content %}
     
-    <table>
-
-    </table>
+    {block
+    
+    
     {% endblock %}
-    {% block content %}{% endblock %}
     {% block footer %}
     <hr>
     {% endblock %}

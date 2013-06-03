@@ -18,4 +18,5 @@ urlpatterns = patterns('',
     url(r'^home/', include ('home.urls')),
     url(r'^login/$', 'users.views.login'),
     url(r'^logout/$', 'users.views.logout'),
+    url(r'^dash/$', 'dash.dash_view'),
 )

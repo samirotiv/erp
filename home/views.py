@@ -67,4 +67,8 @@ def choose_identity ( request ):
 	    return HttpResponseRedirect ('/home/')
     identity_form = ChooseIdentityForm ( curruser = request.user.erpuser )
     return render_to_response ( 'home/choose_identity.html', locals(), context_instance = RequestContext(request) )
+    
+    
+
+
 

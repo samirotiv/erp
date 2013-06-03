@@ -8,9 +8,6 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 from django.template import RequestContext
 
-#UNNECESSARY: ONLY FOR TESTING.
-from dept.models import Dept 
-
 from misc.utilities import core_check
 
 

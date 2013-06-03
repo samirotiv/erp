@@ -35,8 +35,8 @@ class Task(models.Model):
     targetsubdepts = models.ManyToManyField (Subdept, related_name='task_set')
     
     #Taking care of cross-departmental tasks.
-    origindept = models.ForeignKey(Dept, related_name='created_tasks_set')
-    targetdept = models.ForeignKey(Dept, related_name='todo_tasks_set')
+    origindept = models.ForeignKey(Dept, related_name='created_task_set')
+    targetdept = models.ForeignKey(Dept, related_name='todo_task_set')
     isxdepartmental = models.BooleanField(default=False, blank=True)
     
     #This is the task status variable.
@@ -46,7 +46,7 @@ class Task(models.Model):
     taskstatus = models.CharField ( max_length=1, choices=TASK_STATUSES )
 
     #Task Nesting
-    parenttask = models.ForeignKey('self', null=True, blank=True, default=None, related_name='child_tasks_set')
+    parenttask = models.ForeignKey('self', null=True, blank=True, default=None, related_name='childtask_set')
     depthlevel = models.IntegerField(default=0, blank=True)
 
     def __unicode__(self):

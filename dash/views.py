@@ -26,35 +26,19 @@ QUERIES TO RETRIEVE:
 
 """
 @login_required
-def dash_view(request, section="default"):
+def dash_view(request):
     userprofile = request.user.get_profile()
-    
-    #Default Ordering
-    order_by = request.GET.get('order_by', 'deadline')
-    
+
     # Initialize a blank Query dictionary.
     query_dictionary = {}
     
-    #Assigning one of the above values
-    if section == "dept_tasks":
-        query_dictionary["tasks"] = userprofile.dept.todo_task_set.order_by(order_by)
-        
-    elif section == "subdept_tasks":
-        query_dictionary["tasks"] = userprofile.subdept.task_set.order_by(order_by)
-        
-    elif section == "dept_created_crosstasks":
-        query_dictionary["tasks"] = userprofile.dept.created_task_set.filter(isxdepartmental=True).order_by(order_by)
-        
-    elif section == "approval_pending_tasks":
-        query_dictionary["tasks"] = userprofile.dept.created_task_set.filter(taskstatus='U').order_by(order_by)
-        
-    elif section == "dept_cross_tasks":
-        query_dictionary["tasks"] = userprofile.dept.todo_task_set.filter(isxdepartmental=True).order_by(order_by) #Remove if necessary.
-        
-    else section == "usertasks":        #Made User Tasks the default section
-        query_dictionary["tasks"] = userprofile.task_set.order_by(order_by)
-    
-    query_dictionary["section"] = section
+    #Assigning the above values
+    query_dictionary["user_tasks"] = userprofile.task_set.all()
+    query_dictionary["dept_tasks"] = userprofile.dept.todo_task_set.all()
+    query_dictionary["subdept_tasks"] = userprofile.subdept.task_set.all()
+    query_dictionary["dept_created_crosstasks"] = userprofile.dept.created_task_set.filter(isxdepartmental=True)
+    query_dictionary["approval_pending_tasks"] = userprofile.dept.created_task_set.filter(taskstatus='U')
+    query_dictionary["dept_tasks"] = userprofile.dept.todo_task_set.filter(isxdepartmental=True) #Remove if necessary.
     
     
     #RENDERING THE TEMPLATE

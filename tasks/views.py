@@ -46,7 +46,6 @@ def add_intra_task(request):
 
     userprofile = request.user.get_profile()
     department = userprofile.dept
-
     
     if request.method == 'POST':
         form = IntraTaskForm(department, request.POST)
@@ -120,7 +119,7 @@ def edit_intra_task(request, primkey):
 
     userprofile = request.user.get_profile()
     department = userprofile.dept
-    
+
     if (task.isxdepartmental == False) and (task.origindept == department):
         if request.method == 'POST':
             form = IntraTaskForm(department, request.POST, instance=task)

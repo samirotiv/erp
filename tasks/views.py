@@ -11,11 +11,7 @@ from django.template import RequestContext
 #UNNECESSARY: ONLY FOR TESTING.
 from dept.models import Dept 
 
-
-# _____________--- CORE CHECK FUNCTION ---______________#
-def core_check (user):
-    loginuser = user.get_profile()
-    return loginuser.status == 2
+from misc.utilities import core_check
 
 
 """

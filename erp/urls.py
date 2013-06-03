@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(r'^tasks/', include('tasks.urls')),
     url(r'^home/', include ('home.urls')),
     url(r'^login/$', 'users.views.login'),
+    url ( r'^choose_identity/$', 'users.views.choose_identity'),
     url(r'^logout/$', 'users.views.logout'),
-    url(r'^dash/$', 'dash.dash_view'),
+#    url(r'^dash/$', 'dash.dash_view'),
 )

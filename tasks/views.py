@@ -17,11 +17,10 @@ from misc.utilities import core_check, core_or_supercoord_check
 """
 PROPOSED/TODO:
 1. TO ALSO AUTOMATE THE SETTING OF CHILD TASK.
-2. Edit task - create redictor for cross/intra departmental?
-3. Add supercoords into the game - DONE
-4. Disallow cores from being given tasks - NO, CORES CAN BE GIVEN TASKS.
+
+2. ______VERY IMPORTANT____ : AUTOMATICALLY POPULATE THE TASKFORCE FIELDS IN THE EDIT VIEW FOR THE FORM.
+
 5. Also look below for more TODOs
-6. Add strings like Page Heading to the dictionary that is rendered - since one template is being used for all.
 """
 
 
@@ -29,6 +28,8 @@ PROPOSED/TODO:
 # _____________--- INTRADEPARTMENTAL TASK ADD VIEW ---______________#
 """
 MORE INFO:
+Can be created/edited by both Supercoords and Cores
+
 Fields entered by user:
     'deadline', 'subject', 'description', 'taskforce', 'parenttask'
 
@@ -41,6 +42,7 @@ Fields taken care of by the view:
 @login_required
 @user_passes_test (core_or_supercoord_check)
 def add_intra_task(request):
+
 
     userprofile = request.user.get_profile()
     department = userprofile.dept
@@ -93,6 +95,8 @@ def add_intra_task(request):
 MORE INFO:
 
 INTRADEPARTMENTAL TASKS:
+Can be created/edited by both Supercoords and Cores
+
 Fields edited by user:
     'deadline', 'subject', 'description', 'taskforce', 'parenttask', 
 
@@ -108,6 +112,8 @@ FIELDS THAT ARE GOING TO BE HAVE TO WIPED OUT AND RECREATED:
     
 CROSSDEPARTMENTAL TASKS:
 MORE INFO:
+Cores ONLY
+
 Fields entered by user:
     'deadline', 'subject', 'description', 'parenttask', 'targetsubdepts'
 
@@ -260,6 +266,9 @@ def edit_task(request, primkey):
 
 # _____________--- CROSS DEPARTMENTAL TASK ADD VIEW ---______________#
 """
+CORES ONLY
+
+
 MORE INFO:
 Fields entered by user:
     'deadline', 'subject', 'description', 'parenttask', 'targetsubdepts'
@@ -334,6 +343,9 @@ def display_task(request, primkey):
 
 
 # _____________--- TASK DELETE VIEW ---______________#
+"""
+CORES ONLY
+"""
 @login_required
 @user_passes_test (core_check)
 def delete_task(request, primkey):

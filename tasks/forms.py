@@ -15,7 +15,18 @@ class IntraTaskForm(ModelForm):
     class Meta:
         model = Task
         fields = ['deadline', 'subject', 'description',  'parenttask']
+    
+    def clean(self):
+        cleaned_data = super(IntraTaskForm, self).clean()
+        cores = self.cleaned_data['cores']
+        coords = self.cleaned_data['coords']
+        supercoords = self.cleaned_data['supercoords']
         
+        if ((not cores) and (not coords) and (not supercoords)):
+            raise forms.ValidationError("The Task Force cannot be empty.")
+            
+        return cleaned_data
+            
     #Framework for getting a QuerySet of Coords, Supercoords, and Cores.
     def __init__(self, department, *args, **kwargs):
         super (IntraTaskForm,self ).__init__(*args,**kwargs) # populates the post
@@ -37,8 +48,8 @@ class CrossTaskForm(ModelForm):
         
     def clean_targetsubdepts(self):
         value = self.cleaned_data['targetsubdepts']
-        if len(value) > 1:
-            raise forms.ValidationError("Select only one foreign subdepartment to assign the task to.")
+        if (len(value) > 1) or (len(value) == 0):
+            raise forms.ValidationError("Select one and only one foreign subdepartment to assign the task to.")
         return value
     
     #Framework for getting a QuerySet of Subdepartments.

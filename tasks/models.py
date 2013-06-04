@@ -58,25 +58,40 @@ class Task(models.Model):
     #Overriding the default save function
     def save(self, *args, **kwargs):
 
-        
+        super(Task, self).save(*args, **kwargs) 
         # Set the depth level of the task
         if self.parenttask == None:
             self.depthlevel = 0
         else:
             self.depthlevel = self.parenttask.depthlevel + 1
         
+        #Set if it's cross departmental or not.
+        if self.origindept == self.targetdept:
+            self.isxdepartmental = False
+        else:
+            self.isxdepartmental = True
+            
+        #Set the target subdepartments, if a taskforce has been assigned
+        if self.taskforce.count():    
+            #Empty targetsubdepts
+            self.targetsubdepts.clear()
+
+            #Fill targetsubdepts with concerned subdepartments of the TaskForce
+            if self.targetdept:
+                for user in self.taskforce.all():
+                    for usersubdept in user.coord_relations.all():
+                        if usersubdept.dept == self.targetdept:
+                            self.targetsubdepts.add(usersubdept)
+            
+        
         # Call the "real" save() method.
         super(Task, self).save(*args, **kwargs) 
         #do_something_else()
     
-    #Function to populate the TargetSubDepts field
-    def populateTargetSubdepts(self):
-        #Empty targetsubdepts
-        self.targetsubdepts.clear()
-
-        #Fill targetsubdepts with concerned subdepartments of the TaskForce
-        if self.targetdept:
-            for user in self.taskforce.all():
-                for usersubdept in user.coord_relations.all():
-                    if usersubdept.dept == self.targetdept:
-                        self.targetsubdepts.add(usersubdept)
+                        
+    #Helps check if the origin core is allowed to edit the cross departmental task.
+    def isUnapprovedCrosstask(self):
+        if ((self.isxdepartmental == True) and (self.taskstatus == 'U')):
+            return True
+        else:
+            return False

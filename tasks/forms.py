@@ -14,7 +14,7 @@ class IntraTaskForm(ModelForm):
 
     class Meta:
         model = Task
-        fields = ['deadline', 'subject', 'description',  'parenttask']
+        fields = ['deadline', 'subject', 'description']
     
     def clean(self):
         cleaned_data = super(IntraTaskForm, self).clean()
@@ -43,7 +43,7 @@ class IntraTaskForm(ModelForm):
 class CrossTaskForm(ModelForm):
     class Meta:
         model = Task
-        fields = ['deadline', 'subject', 'description', 'parenttask', 'targetsubdepts']
+        fields = ['deadline', 'subject', 'description', 'targetsubdepts']
         
         
     def clean_targetsubdepts(self):

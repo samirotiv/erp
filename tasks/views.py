@@ -31,22 +31,28 @@ MORE INFO:
 Can be created/edited by both Supercoords and Cores
 
 Fields entered by user:
-    'deadline', 'subject', 'description', 'taskforce', 'parenttask'
+    'deadline', 'subject', 'description', 'taskforce'
 
 Fields automatically taken care of by model/model save function override:
-    'taskcreator', 'datecreated', 'datelastmodified', 'depthlevel'
+    'taskcreator', 'datecreated', 'datelastmodified', 'depthlevel', 'parenttask'
 
 Fields taken care of by the view:
     'targetsubdepts', 'origindept', 'targetdept', 'isxdepartmental', 'taskstatus'
 """
 @login_required
 @user_passes_test (core_or_supercoord_check)
-def add_intra_task(request):
-
-
+def add_intra_task(request, primkey=None):
+    #Get Parent Task
+    if primkey:
+        parenttask = Task.objects.get(pk=primkey)
+        parentlabel = "\nParent task: " + parenttask.subject
+    else:
+        parentlabel = "\nThis is a top level task."
+        
     userprofile = request.user.get_profile()
     department = userprofile.dept
     title = "Add Intradepartmental Task"
+    info = parentlabel
     
     if request.method == 'POST':
         form = IntraTaskForm(department, request.POST)
@@ -58,6 +64,7 @@ def add_intra_task(request):
             newTask.targetdept = userprofile.dept
             newTask.taskcreator = userprofile
             newTask.taskstatus = 'O'
+            newTask.parenttask = parenttask
             
             #For many to many relationships to be created, the object MUST first exist in the database.
             newTask.save()
@@ -80,7 +87,7 @@ def add_intra_task(request):
             newTask.save()        
             return HttpResponse ("Task Saved")
         else:
-            return render_to_response ('tasks/task.html', {'form': form, 'title':title }, context_instance=RequestContext(request))
+            return render_to_response ('tasks/task.html', {'form': form, 'title':title, 'info':info }, context_instance=RequestContext(request))
     
     else:
         form = IntraTaskForm(department)
@@ -135,10 +142,17 @@ def edit_task(request, primkey):
     task = Task.objects.get(pk=primkey)
     userprofile = request.user.get_profile()
     department = userprofile.dept
+    
+    #Get Parent Task
+    if task.parenttask:
+        parentlabel = "\nParent task: " + task.parenttask.subject
+    else:
+        parentlabel = "\nThis is a top level task."
 
 #___________----INTRADEPARTMENTAL TASK EDIT----__________________
     if ((task.isxdepartmental == False) and (task.origindept == department)):
         title = "Edit Intradepartmental Task"
+        info = parentlabel
         if request.method == 'POST':
             form = IntraTaskForm(department, request.POST, instance=task)
             if form.is_valid():
@@ -163,7 +177,7 @@ def edit_task(request, primkey):
                 return HttpResponse ("Task Saved")
             else:
                 #Render the form along with all its errors.
-                return render_to_response ('tasks/task.html', {'form': form, 'title':title  }, context_instance=RequestContext(request))
+                return render_to_response ('tasks/task.html', {'form': form, 'title':title , 'info':info }, context_instance=RequestContext(request))
         
         else:
             form = IntraTaskForm(department, instance=task)
@@ -181,7 +195,7 @@ def edit_task(request, primkey):
             #For the originating department's core
             if (task.taskstatus == 'U') and (task.origindept == department):
                 title = "Edit Crossdepartmental Task"
-                info = "Allowed only until approved by the target department's core."
+                info = "Allowed only until approved by the target department's core." + parentlabel
                 form = CrossTaskForm(department, request.POST, instance=task)
                 if form.is_valid():
                     form.save()
@@ -202,7 +216,7 @@ def edit_task(request, primkey):
                 for subdept in task.targetsubdepts:
                     targetsubdept = subdept
                 title = "Edit/Approve Crossdepartmental Task"
-                info = "Submitting the task here automatically approves & assigns it to the selected workforce.\n<b>Target Subdepartment Requested for the Task: " + targetsubdept + "</b>"
+                info = "Submitting the task here automatically approves & assigns it to the selected workforce.\n<b>Target Subdepartment Requested for the Task: " + targetsubdept + "</b>" + parentlabel
                 form = IntraTaskForm(department, request.POST, instance=task)
                 if form.is_valid():
                     form.save()
@@ -284,9 +298,17 @@ Fields that are unset:
 """
 @login_required
 @user_passes_test (core_check)
-def add_cross_task(request):
+def add_cross_task(request, primkey=None):
+    #Get Parent Task
+    if primkey:
+        parenttask = Task.objects.get(pk=primkey)
+        parentlabel = "\nParent task: " + parenttask.subject
+    else:
+        parentlabel = "\nThis is a top level task."
+        
+        
     title = "Add Cross-departmental Task."
-    info = "Subject to approval of the target department's core."
+    info = "Subject to approval of the target department's core." + parentlabel
     
     userprofile = request.user.get_profile()
     department = userprofile.dept
@@ -306,6 +328,8 @@ def add_cross_task(request):
             newTask.taskcreator = userprofile
             newTask.isxdepartmental = True
             newTask.taskstatus = 'U'
+            if primkey:
+                newTask.parenttask = parenttask
       
             #Set the origin & target departments.        
             newTask.origindept = userprofile.dept

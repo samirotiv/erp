@@ -90,9 +90,11 @@ def add_intra_task(request):
 
 
 
-# _____________--- INTRADEPARTMENTAL TASK EDIT VIEW ---______________#
+# _____________--- UNIFIED TASK EDIT VIEW ---______________#
 """
 MORE INFO:
+
+INTRADEPARTMENTAL TASKS:
 Fields edited by user:
     'deadline', 'subject', 'description', 'taskforce', 'parenttask', 
 
@@ -104,15 +106,33 @@ FIELDS THAT WON'T CHANGE:
 
 FIELDS THAT ARE GOING TO BE HAVE TO WIPED OUT AND RECREATED:
     'targetsubdepts'
+    
+    
+CROSSDEPARTMENTAL TASKS:
+MORE INFO:
+Fields entered by user:
+    'deadline', 'subject', 'description', 'parenttask', 'targetsubdepts'
+
+Fields automatically taken care of by model/model save function override:
+    'taskcreator', 'datecreated', 'datelastmodified', 'depthlevel'
+
+Fields taken care of by the view:
+    'targetdept'
+    
+FIELDS THAT WON'T CHANGE:
+    'origindept', 'isxdepartmental', 'taskstatus', 'taskcreator', 'datecreated'
+    
+Fields that are unset:
+     'taskforce'
 """
 @login_required
 @user_passes_test (core_check)
-def edit_intra_task(request, primkey):
+def edit_task(request, primkey):
     task = Task.objects.get(pk=primkey)
-
     userprofile = request.user.get_profile()
     department = userprofile.dept
 
+#___________----INTRADEPARTMENTAL TASK EDIT----__________________
     if (task.isxdepartmental == False) and (task.origindept == department):
         if request.method == 'POST':
             form = IntraTaskForm(department, request.POST, instance=task)
@@ -147,98 +167,8 @@ def edit_intra_task(request, primkey):
             form = IntraTaskForm(department, instance=task)
             context = {'form': form}
             return render_to_response('tasks/task.html', context, context_instance=RequestContext(request))
-    else: 
-        return HttpResponse ("Intradepartmental tasks only")
-
-        
-
-
-# _____________--- CROSS DEPARTMENTAL TASK ADD VIEW ---______________#
-"""
-MORE INFO:
-Fields entered by user:
-    'deadline', 'subject', 'description', 'parenttask', 'targetsubdepts'
-
-Fields automatically taken care of by model/model save function override:
-    'taskcreator', 'datecreated', 'datelastmodified', 'depthlevel'
-
-Fields taken care of by the view:
-    'origindept', 'targetdept', 'isxdepartmental', 'taskstatus' 
-    
-Fields that are unset:
-     'taskforce'
-"""
-@login_required
-@user_passes_test (core_check)
-def add_cross_task(request):
-
-    userprofile = request.user.get_profile()
-    department = userprofile.dept
-    
-    if request.method == 'POST':
-        form = CrossTaskForm(department, request.POST)
-        if form.is_valid():
-            #Create a task object without writing to the database
-            newTask = form.save(commit=False)
             
-            #Get selected subdepartment from form and set targetdepartment
-            #There's only one object in the form field - the loop is only going to run once.
-            for subdept in form.cleaned_data['targetsubdepts']:
-                newTask.targetdept = subdept.dept
-            
-            #Set these variables - Unapproved X-Departmental task
-            newTask.taskcreator = userprofile
-            newTask.isxdepartmental = True
-            newTask.taskstatus = 'U'
-      
-            #Set the origin & target departments.        
-            newTask.origindept = userprofile.dept
-            
-            #For many to many relationships to be created, the object MUST first exist in the database
-            #Saves newTask and also saves the ManyToMany Data
-            newTask.save()
-            form.save_m2m()
-            
-            return HttpResponse ("Task Saved")
-        else:
-            #Render the form again with all its errors.
-            return render_to_response ('tasks/task.html', {'form': form }, context_instance=RequestContext(request))
-    else:
-        form = CrossTaskForm (department)
-        context = {'form': form}
-        return render_to_response('tasks/task.html', context, context_instance=RequestContext(request))
-        
-        
-
-
-
-# _____________--- CROSS DEPARTMENTAL TASK EDIT/APPROVE VIEW ---______________#
-"""
-MORE INFO:
-Fields entered by user:
-    'deadline', 'subject', 'description', 'parenttask', 'targetsubdepts'
-
-Fields automatically taken care of by model/model save function override:
-    'taskcreator', 'datecreated', 'datelastmodified', 'depthlevel'
-
-Fields taken care of by the view:
-    'targetdept'
-    
-FIELDS THAT WON'T CHANGE:
-    'origindept', 'isxdepartmental', 'taskstatus', 'taskcreator', 'datecreated'
-    
-Fields that are unset:
-     'taskforce'
-
-""" 
-@login_required
-@user_passes_test (core_check)
-def edit_cross_task(request, primkey):
-    task = Task.objects.get(pk=primkey)
-
-    userprofile = request.user.get_profile()
-    department = userprofile.dept
-
+#___________----CROSSDEPARTMENTAL TASK EDIT----__________________            
     if task.isxdepartmental == True:
         if request.method == 'POST':
             #For the originating department's core
@@ -305,10 +235,72 @@ def edit_cross_task(request, primkey):
                 
             else:
                 return HttpResponse ("Pack.")
+
+    
+
+        
+
+
+# _____________--- CROSS DEPARTMENTAL TASK ADD VIEW ---______________#
+"""
+MORE INFO:
+Fields entered by user:
+    'deadline', 'subject', 'description', 'parenttask', 'targetsubdepts'
+
+Fields automatically taken care of by model/model save function override:
+    'taskcreator', 'datecreated', 'datelastmodified', 'depthlevel'
+
+Fields taken care of by the view:
+    'origindept', 'targetdept', 'isxdepartmental', 'taskstatus' 
+    
+Fields that are unset:
+     'taskforce'
+"""
+@login_required
+@user_passes_test (core_check)
+def add_cross_task(request):
+
+    userprofile = request.user.get_profile()
+    department = userprofile.dept
+    
+    if request.method == 'POST':
+        form = CrossTaskForm(department, request.POST)
+        if form.is_valid():
+            #Create a task object without writing to the database
+            newTask = form.save(commit=False)
+            
+            #Get selected subdepartment from form and set targetdepartment
+            #There's only one object in the form field - the loop is only going to run once.
+            for subdept in form.cleaned_data['targetsubdepts']:
+                newTask.targetdept = subdept.dept
+            
+            #Set these variables - Unapproved X-Departmental task
+            newTask.taskcreator = userprofile
+            newTask.isxdepartmental = True
+            newTask.taskstatus = 'U'
+      
+            #Set the origin & target departments.        
+            newTask.origindept = userprofile.dept
+            
+            #For many to many relationships to be created, the object MUST first exist in the database
+            #Saves newTask and also saves the ManyToMany Data
+            newTask.save()
+            form.save_m2m()
+            
+            return HttpResponse ("Task Saved")
+        else:
+            #Render the form again with all its errors.
+            return render_to_response ('tasks/task.html', {'form': form }, context_instance=RequestContext(request))
     else:
-        return HttpResponse ("Cross departmental tasks only.")
+        form = CrossTaskForm (department)
+        context = {'form': form}
+        return render_to_response('tasks/task.html', context, context_instance=RequestContext(request))
+        
+        
 
 
+
+# _____________--- TASK DISPLAY VIEW ---______________#
 def display_task(request,primkey):
 
 #TODO: Redirect people who aren't allowd to view this task. Add edit and delete buttons for cores and supercoords

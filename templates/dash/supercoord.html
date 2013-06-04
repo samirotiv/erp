@@ -10,6 +10,7 @@
                             <th>Date Created</th>
                             <th>Deadline</th>
                             <th class="sorttable_nosort"></th>
+                            <th class="sorttable_nosort">Add a subtask</th>
                         </tr>
 
                     
@@ -21,6 +22,7 @@
                             <td>{{task.datecreated}}</td>
                             <td>{{task.deadline}}</td>
                             <td><a href="{% url 'tasks.views.edit_task' task.pk %}">Edit</a></td>
+                            <td><a href="{% url tasks.views.add_task task.pk %}">Create</a></td>
                         </tr>
                     {% endfor %}
             </table></p>
@@ -40,6 +42,7 @@
                             <th>Date Created</th>
                             <th>Deadline</th>
                             <th class="sorttable_nosort"></th>
+                            <th class="sorttable_nosort">Add a subtask</th>
                         </tr>
 
                     
@@ -51,6 +54,7 @@
                             <td>{{task.datecreated}}</td>
                             <td>{{task.deadline}}</td>
                             <td><a href="{% url 'tasks.views.edit_task' task.pk %}">Edit</a></td>
+                            <td><a href="{% url tasks.views.add_task task.pk %}">Create</a></td>
                         </tr>
                     {% endfor %}
             </table></p>

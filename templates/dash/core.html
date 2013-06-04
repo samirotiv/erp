@@ -10,6 +10,7 @@
                             <th>Date Created</th>
                             <th>Deadline</th>
                             <th class="sorttable_nosort"></th>
+                            <th class="sorttable_nosort">Add a subtask</th>
                         </tr>
 
                     
@@ -21,6 +22,7 @@
                             <td>{{task.datecreated}}</td>
                             <td>{{task.deadline}}</td>
                             <td><a href="{% url tasks.views.edit_task task.pk %}">Edit</a>/<a href="{% url tasks.views.delete_task task.pk %}">Delete</a></td>
+                            <td><a href="{% url tasks.views.add_cross_task task.pk %}">For another department</a>/<a href="{% url tasks.views.add_intra_task task.pk %}">For {{userprofile.dept}}</a></td>
                         </tr>
                     {% endfor %}
             </table></p>
@@ -40,6 +42,7 @@
                             <th>Date Created</th>
                             <th>Deadline</th>
                             <th class="sorttable_nosort"></th>
+                            <th class="sorttable_nosort">Add a subtask</th>
                         </tr>
 
                     
@@ -51,6 +54,7 @@
                             <td>{{task.datecreated}}</td>
                             <td>{{task.deadline}}</td>
                             <td><a href="{% url tasks.views.edit_task task.pk %}">Edit</a>/<a href="{% url tasks.views.delete_task task.pk %}">Delete</a></td>
+                            <td><a href="{% url tasks.views.add_cross_task task.pk %}">For another department</a>/<a href="{% url tasks.views.add_intra_task task.pk %}">For {{userprofile.dept}}</a></td>
                         </tr>
                     {% endfor %}
             </table></p>
@@ -73,6 +77,7 @@
                             <th>Date Created</th>
                             <th>Deadline</th>
                             <th class="sorttable_nosort"></th>
+                            <th class="sorttable_nosort">Add a subtask</th>
                         </tr>
 
                     
@@ -85,6 +90,7 @@
                             <td>{{task.datecreated}}</td>
                             <td>{{task.deadline}}</td>
                             <td><a href="{% url tasks.views.edit_task task.pk %}">Approve</a>/<a href="{% url tasks.views.delete_task task.pk %}">Delete</a></td>
+                            <td><a href="{% url tasks.views.add_cross_task task.pk %}">For another department</a>/<a href="{% url tasks.views.add_intra_task task.pk %}">For {{userprofile.dept}}</a></td>
                         </tr>
                     {% endfor %}
             </table></p>
@@ -106,6 +112,7 @@
                             <th>Date Created</th>
                             <th>Deadline</th>
                             <th class="sorttable_nosort"></th>
+                            <th class="sorttable_nosort">Add a subtask</th>
                         </tr>
 
                     
@@ -118,6 +125,7 @@
                             <td>{{task.datecreated}}</td>
                             <td>{{task.deadline}}</td>
                             <td>{% if task.isUnapprovedCrosstask %}<a href="{% url tasks.views.edit_task task.pk %}">Edit</a>/<a href="{% url tasks.views.delete_task task.pk %}">Delete</a>{% else %}Approved{% endif %}</td>
+                            <td><a href="{% url tasks.views.add_cross_task task.pk %}">For another department</a>/<a href="{% url tasks.views.add_intra_task task.pk %}">For {{userprofile.dept}}</a></td>
                         </tr>
                     {% endfor %}
             </table></p>

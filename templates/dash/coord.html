@@ -1,0 +1,64 @@
+{% extends "dash/base.html" %}
+    {% block content %}
+    
+        {% if user_tasks %}
+            <p><h1>Tasks assigned to you:</h1>
+            <p><table border=1>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Creator</th>
+                            <th>Date Created</th>
+                            <th>Deadline</th>
+                            
+                        </tr>
+
+                    
+                    
+                    {% for task in user_tasks %}
+                        <tr>
+                            <td><a href="{% url tasks.views.display_task task.pk %}">{{task.subject}}</a></td>
+                            <td>{{task.taskcreator.user.first_name}} {{task.taskcreator.user.last_name}}</td>
+                            <td>{{task.datecreated}}</td>
+                            <td>{{task.deadline}}</td>
+                            
+                        </tr>
+                    {% endfor %}
+            </table></p>
+        
+        {% else %}
+                <p>No tasks assigned to you</p>
+        
+        {% endif %}
+        
+        
+        {% if subdept_tasks %}
+            <p><h1>Tasks assigned to {{userprofile.dept}}:</h1>
+            <p><table border=1>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Creator</th>
+                            <th>Date Created</th>
+                            <th>Deadline</th>
+                        </tr>
+
+                    
+                    
+                    {% for task in subdept_tasks %}
+                        <tr>
+                            <td><a href="{% url tasks.views.display_task task.pk %}">{{task.subject}}</a></td>
+                            <td>{{task.taskcreator.user.first_name}} {{task.taskcreator.user.last_name}}{% if task.isxdepartmental %}({{task.origindept}}){% endif %}</td>
+                            <td>{{task.datecreated}}</td>
+                            <td>{{task.deadline}}</td>
+                        </tr>
+                    {% endfor %}
+            </table></p>
+        
+        {% else %}
+                <p>No tasks assigned to {{userprofile.dept}}</p>
+        
+        {% endif %}
+    
+        
+        
+           
+    {% endblock %}

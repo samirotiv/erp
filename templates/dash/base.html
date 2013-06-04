@@ -1,7 +1,9 @@
+{% load staticfiles %}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="en">
 <head>
     <title>{% block title %}ERP{% endblock %}</title>
+    <script src="{% static "dash/sorttable.js" %}"></script>
 </head>
 <body>
     <a href = '/logout/'> Logout </a>

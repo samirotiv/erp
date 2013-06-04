@@ -3,7 +3,7 @@
     
         {% if user_tasks %}
             <p><h1>Tasks assigned to you:</h1>
-            <p><table border=1>
+            <p><table border=1 class="sortable">
                         <tr>
                             <th>Subject</th>
                             <th>Creator</th>
@@ -33,7 +33,7 @@
         
         {% if subdept_tasks %}
             <p><h1>Tasks assigned to {{userprofile.dept}}:</h1>
-            <p><table border=1>
+            <p><table border=1 class="sortable">
                         <tr>
                             <th>Subject</th>
                             <th>Creator</th>

@@ -44,10 +44,12 @@ Fields taken care of by the view:
 def add_intra_task(request, primkey=None):
     #Get Parent Task
     if primkey:
+	#Need to figure out the try, except block here
         parenttask = Task.objects.get(pk=primkey)
         parentlabel = "\nParent task: " + parenttask.subject
     else:
         parentlabel = "\nThis is a top level task."
+	parenttask = None
         
     userprofile = request.user.get_profile()
     department = userprofile.dept

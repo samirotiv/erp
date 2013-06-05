@@ -9,6 +9,7 @@
                             <th>Creator</th>
                             <th>Date Created</th>
                             <th>Deadline</th>
+			    <th>Report near completion</th>
                             
                         </tr>
 
@@ -32,7 +33,7 @@
         
         
         {% if subdept_tasks %}
-            <p><h1>Tasks assigned to {{userprofile.dept}}:</h1>
+            <p><h1>Tasks assigned to {{userprofile.subdept}}:</h1>
             <p><table border=1 class="sortable">
                         <tr>
                             <th>Subject</th>
@@ -54,7 +55,7 @@
             </table></p>
         
         {% else %}
-                <p>No tasks assigned to {{userprofile.dept}}</p>
+                <p>No tasks assigned to {{userprofile.subdept}}</p>
         
         {% endif %}
     

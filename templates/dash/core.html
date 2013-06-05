@@ -1,5 +1,7 @@
 {% extends "dash/base.html" %}
     {% block content %}
+    <p> <a href = {% url tasks.views.add_intra_task %}> Create a task within {{ userprofile.dept }} </a> </p>
+    <P> <a href = {% url tasks.views.add_cross_task %}> Add a cross departmental task </a> </p>
     
         {% if user_tasks %}
             <p><h1>Tasks assigned to you:</h1>

@@ -2,16 +2,8 @@
 
 # _____________--- CORE CHECK FUNCTION ---______________#
 def core_check (user):
-    loginuser = user.get_profile()
-    if loginuser.status == '2':
-        return True
-    else:
-        return False
+    return user.get_profile().status == 2
 
 def core_or_supercoord_check (user):
-    loginuser = user.get_profile()
-    if ((loginuser.status == '2') or (loginuser.status == '1')):
-        return True
-    else:
-        return False
+    return user.get_profile().status == 2 or user.get_profile().status == 1
 

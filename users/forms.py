@@ -2,10 +2,6 @@ from django import forms
 from users.models import ERPUser
 from dept.models import Dept, Subdept
 
-class LoginForm(forms.Form):
-
-    username=forms.CharField(help_text='Your ERP username')
-    password=forms.CharField(widget=forms.PasswordInput, help_text='Your password.')
 
 
 class ChooseIdentityForm(forms.Form):

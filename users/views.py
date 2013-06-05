@@ -1,6 +1,6 @@
 # Create your views here.
 
-from users.forms import LoginForm, ChooseIdentityForm
+from users.forms import  ChooseIdentityForm
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout, REDIRECT_FIELD_NAME
 from django.template.context import Context, RequestContext
 from django.shortcuts import render_to_response
@@ -34,12 +34,10 @@ def login(request):
 
 	#If the username and password aren't in order
         invalid_login = True
-        login_form = LoginForm()
         return render_to_response('users/login.html', locals(), context_instance=RequestContext(request))
     
     #rendering for the initial GET request
     else:
-	login_form = LoginForm()
         return render_to_response('users/login.html', locals(), context_instance=RequestContext(request))
  
 def logout(request):

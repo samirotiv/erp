@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-{% load staticfiles %}
-<html>
-<head>
-	<title>Task Page</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet" media="screen">
-</head>
-<body>
+{% extends "base.html" %}
+{% block content %}
     <H1> Task </H1>
     
 <table>
@@ -37,5 +30,4 @@
     <td> {{task.taskstatus }} </td>
   </tr>
 </table>
-</body>
-</html>
+{% endblock %}

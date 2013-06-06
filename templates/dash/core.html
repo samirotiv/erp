@@ -1,4 +1,5 @@
-{% extends "dash/base.html" %}
+{% extends "base.html" %}
+{% block welcome %} <H2> Welcome {{ userprofile }} </H2> {% endblock %}
     {% block content %}
     <p> <a href = {% url tasks.views.add_intra_task %}> Create a task within {{ userprofile.dept }} </a> </p>
     <P> <a href = {% url tasks.views.add_cross_task %}> Add a cross departmental task </a> </p>

@@ -1,5 +1,7 @@
-{% extends "dash/base.html" %}
+{% extends "base.html" %}
+{% block welcome %} <H2> Welcome {{ userprofile }} </H2> {% endblock %}
     {% block content %}
+
     
         {% if user_tasks %}
             <p><h1>Tasks assigned to you:</h1>
